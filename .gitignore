@@ -1,1 +1,4 @@
-dist
+src/test_data/*
+*.pyc
+*.rar
+sample/

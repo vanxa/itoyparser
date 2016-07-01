@@ -1,0 +1,10 @@
+ITOY parser INSTRUCTIONS:
+
+The binaries are located in dist folder
+You need Python 3.4 in order to run
+
+1. Place your input files inside dist/ITOYInput directory
+2. Run itoyparser.exe (located in dist directory) - the parse output will be shown on your screen
+
+The sources are in src folder
+

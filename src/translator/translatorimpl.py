@@ -183,51 +183,23 @@ class IToYTranslator(AbstractTranslator):
         self._writeln( "*** HOLE CARDS ***")
         self._writeln( "Dealt to "+ self.hero + " " + self.hero_cards)
         for action in self.pf_actions:
-            for player in action.keys(): # should be a single entry
-                (act,all_in,val) = action[player]
-                act_string = player + ": " + act
-                if all_in is not None:
-                    act_string += " AllIn"
-                if val is not None:
-                        act_string += " " + val
-                self._writeln( act_string)
+            self._writeln(self._process_action_for_print(action))
         
         if len(self.flop_cards):
             self._writeln( "*** FLOP *** " + self.flop_cards)        
         if len(self.flop_actions):
             for action in self.flop_actions:
-                for player in action.keys(): # should be a single entry
-                    (act,all_in,val) = action[player]
-                    act_string = player + ": " + act
-                    if all_in is not None:
-                        act_string += " AllIn"
-                    if val is not None:
-                        act_string += " " + val
-                    self._writeln( act_string)
+                self._writeln(self._process_action_for_print(action))
         if self.turn_card:
             self._writeln( "*** TURN *** " + self.flop_cards + " " + self.turn_cards)
         if len(self.turn_actions):
             for action in self.turn_actions:
-                for player in action.keys(): # should be a single entry
-                    (act,all_in,val) = action[player]
-                    act_string = player + ": " + act
-                    if all_in is not None:
-                        act_string += " AllIn"
-                    if val is not None:
-                        act_string += " " + val
-                    self._writeln( act_string)
+                self._writeln(self._process_action_for_print(action))
         if self.river_card:
             self._writeln( "*** RIVER *** " + self.flop_cards + " " + self.turn_cards + " " + self.river_cards)
         if len(self.river_actions):
             for action in self.river_actions:
-                for player in action.keys(): # should be a single entry
-                    (act,all_in,val) = action[player]
-                    act_string = player + ": " + act
-                    if all_in is not None:
-                        act_string += " AllIn"
-                    if val is not None:
-                        act_string += " " + val
-                    self._writeln( act_string)
+                self._writeln(self._process_action_for_print(action))
         
                     
         self._writeln( "*** SUMMARY ***")            
@@ -244,7 +216,17 @@ class IToYTranslator(AbstractTranslator):
         self._writeln(win_str)
         self._writeln("\n")
                 
-        
+    def _process_action_for_print(self,action):
+        for player in action.keys(): # should be a single entry
+                (act,all_in,val) = action[player]
+                act_string = player
+                if all_in is not None and act == "Raise":
+                    act_string += ": Allin"
+                else:
+                    act_string += ": " + act
+                if val is not None:
+                        act_string += " " + val
+                return act_string   
     
     def _writeln(self, line):
         if self.out_file is not None:
@@ -300,7 +282,7 @@ class IToYTranslator(AbstractTranslator):
         
     def _process_blind(self, string):
         if string == "raises all-in":
-            return "Raise AllIn"
+            return "Allin"
         elif string == "posts small blind":
             return "Post SB"
         else:
