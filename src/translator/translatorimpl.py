@@ -196,7 +196,7 @@ class IToYTranslator(AbstractTranslator):
             for action in self.turn_actions:
                 self._writeln(self._process_action_for_print(action))
         if self.river_card:
-            self._writeln( "*** RIVER *** " + self.flop_cards + " " + self.turn_cards + " " + self.river_card)
+            self._writeln( "*** RIVER *** " + self.flop_cards + " " + self.turn_card + " " + self.river_card)
         if len(self.river_actions):
             for action in self.river_actions:
                 self._writeln(self._process_action_for_print(action))
