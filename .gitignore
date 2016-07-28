@@ -3,3 +3,4 @@ src/test_data/*
 *.rar
 sample/
 dist/
+.txt

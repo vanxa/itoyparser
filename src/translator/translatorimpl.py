@@ -72,7 +72,7 @@ class IToYTranslator(AbstractTranslator):
                                                                 
                     
                 elif self.step == 2: # FLOP
-                    obj = self._lookup_line(RE_FLOP_H, line)
+                    obj = self._lookup_line(RE_FLOP_H, line.replace("*",""))
                     if obj:
                         self.flop_cards = self._process_cards(obj.group(1))
                     else:
@@ -85,9 +85,9 @@ class IToYTranslator(AbstractTranslator):
                                 self.flop_actions.append({player : (act,all_in,self._process_value(val))})
                 
                 elif self.step == 3: # TURN
-                    obj = self._lookup_line(RE_TURN_H, line)
+                    obj = self._lookup_line(RE_TURN_H, line.replace("*",""))
                     if obj:
-                        self.turn_cards = self._process_cards(obj.group(1))
+                        self.turn_card = self._process_cards(obj.group(1))
                     else:
                         obj = self._lookup_line(RE_ACT, line)
                         if obj:
@@ -98,9 +98,9 @@ class IToYTranslator(AbstractTranslator):
                                 self.turn_actions.append({player : (act,all_in,self._process_value(val))})
                 
                 elif self.step == 4: # RIVER
-                    obj = self._lookup_line(RE_RIVER_H, line)
+                    obj = self._lookup_line(RE_RIVER_H, line.replace("*",""))
                     if obj:
-                        self.river_cards = self._process_cards(obj.group(1))
+                        self.river_card = self._process_cards(obj.group(1))
                     else:
                         obj = self._lookup_line(RE_ACT, line)
                         if obj:
@@ -191,12 +191,12 @@ class IToYTranslator(AbstractTranslator):
             for action in self.flop_actions:
                 self._writeln(self._process_action_for_print(action))
         if self.turn_card:
-            self._writeln( "*** TURN *** " + self.flop_cards + " " + self.turn_cards)
+            self._writeln( "*** TURN *** " + self.flop_cards + " " + self.turn_card)
         if len(self.turn_actions):
             for action in self.turn_actions:
                 self._writeln(self._process_action_for_print(action))
         if self.river_card:
-            self._writeln( "*** RIVER *** " + self.flop_cards + " " + self.turn_cards + " " + self.river_cards)
+            self._writeln( "*** RIVER *** " + self.flop_cards + " " + self.turn_cards + " " + self.river_card)
         if len(self.river_actions):
             for action in self.river_actions:
                 self._writeln(self._process_action_for_print(action))
